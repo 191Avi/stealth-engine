@@ -59,4 +59,4 @@ npm run deploy
 
 ---
 
-> Built with Claude AI · Execution-first design · No fluff, only action
+> Execution-first design · No fluff, only action
