@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 const phases = [
   {
@@ -55,7 +55,7 @@ const phases = [
       {
         title: "Build the Offer Stack (3 Tiers)",
         detail:
-          "Tier 1 (Entry) — $11–$33: The thing that got them in. Quick win, fast delivery. Tier 2 (Core) — $97–$147: The full version, systemized. Example: Cold email sequence (Tier 1: 3 emails, $22) → Full 10-email drip campaign ($97). Tier 3 (Premium) — $297–$497: Done-for-you or recurring. Example: Monthly LinkedIn content ($297/mo).",
+          "Tier 1 (Entry) — $11–$33: The thing that got them in. Quick win, fast delivery. Tier 2 (Core) — $97–$147: The full version, systemized. Tier 3 (Premium) — $297–$497: Done-for-you or recurring.",
       },
       {
         title: "Upsell After Every Delivery",
@@ -95,40 +95,35 @@ const phases = [
       {
         title: "Build the Faceless Content Layer",
         detail:
-          "Create 1 Pinterest board around your niche (e.g. 'Cold Email Templates', 'Notion Productivity'). Post 5 pins/day using Canva — each pin links to your Gumroad. Pinterest has 500M users and pins rank on Google. Zero followers needed — it's a search engine.",
+          "Create 1 Pinterest board around your niche. Post 5 pins/day using Canva — each pin links to your Gumroad. Pinterest has 500M users and pins rank on Google. Zero followers needed — it's a search engine.",
       },
       {
         title: "Deploy Reddit SEO (Silent Ranking)",
         detail:
-          "Find the top 10 questions in your niche on Reddit. Write detailed, helpful answers (not pitches). In your bio or a subtle comment link, drop your Gumroad. Reddit threads rank on Google page 1 within days. This is free organic traffic that lasts months.",
+          "Find the top 10 questions in your niche on Reddit. Write detailed, helpful answers (not pitches). In your bio or a subtle comment link, drop your Gumroad. Reddit threads rank on Google page 1 within days.",
       },
       {
         title: "Quora Authority Drop",
         detail:
-          "Answer 2–3 Quora questions per day in your niche. These rank on Google extremely fast. No face, no brand — just value + a link in your profile. Quora answers have generated 6-figure income for faceless operators.",
+          "Answer 2–3 Quora questions per day in your niche. These rank on Google extremely fast. No face, no brand — just value + a link in your profile.",
       },
       {
         title: "Email List (Even at 0 Subscribers)",
         detail:
-          "Set up a free ConvertKit account. Add a free lead magnet (a 1-page checklist or template from your Tier 1 offer). Every Gumroad buyer gets added. Send 1 email/week with value + a soft pitch. 100 subscribers at 3% conversion = 3 sales/week = $90–$300/week passively.",
+          "Set up a free ConvertKit account. Add a free lead magnet from your Tier 1 offer. Every Gumroad buyer gets added. Send 1 email/week with value + a soft pitch. 100 subscribers at 3% conversion = 3 sales/week passively.",
       },
       {
         title: "The $9.3k Lock-In: Recurring Stack",
         detail:
-          "By Day 30, convert 5–10 buyers to monthly retainers at $297–$497/mo. 10 retainers @ $497 = $4,970/mo recurring. Add Tier 1 + Tier 2 active sales ($500–$1,000/mo). Passive digital product sales via silent distribution ($500–$800/mo). Total: $6,000–$9,300/mo by Day 45.",
+          "By Day 30, convert 5–10 buyers to monthly retainers at $297–$497/mo. 10 retainers @ $497 = $4,970/mo recurring. Add active sales ($500–$1,000/mo) + passive digital product sales ($500–$800/mo). Total: $6,000–$9,300/mo by Day 45.",
       },
     ],
-    tools: [
-      "Pinterest (faceless)",
-      "Reddit (SEO answers)",
-      "Quora",
-      "ConvertKit (free)",
-      "Gumroad (storefront)",
-      "Canva (pin graphics)",
-    ],
+    tools: ["Pinterest (faceless)", "Reddit (SEO answers)", "Quora", "ConvertKit (free)", "Gumroad (storefront)", "Canva (pin graphics)"],
     kpi: "10 retainers + passive traffic = $9,300/mo locked by Day 45",
   },
 ];
+
+const phaseColors = phases.map((p) => p.color);
 
 const metrics = [
   { label: "Day 5 Target", value: "$330", sub: "Micro sales sprint" },
@@ -136,6 +131,8 @@ const metrics = [
   { label: "Day 30 Target", value: "$4.9K", sub: "Retainer lock-in" },
   { label: "Day 45 Target", value: "$9.3K", sub: "Full engine running" },
 ];
+
+const metricColors = [phaseColors[0], phaseColors[1], phaseColors[2], phaseColors[2]];
 
 const rules = [
   "Never pitch. Find intent, offer to solve.",
@@ -151,7 +148,7 @@ export default function StealthEngine() {
   const [activePhase, setActivePhase] = useState(0);
   const [checkedSteps, setCheckedSteps] = useState({});
 
-  const phase = phases[activePhase];
+  const phase = phases[activePhase] || phases[0];
 
   const toggleStep = (phaseId, stepIdx) => {
     const key = `${phaseId}-${stepIdx}`;
@@ -172,15 +169,18 @@ export default function StealthEngine() {
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #111; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
-        .phase-btn { transition: all 0.2s ease; cursor: pointer; border: none; }
+        .phase-btn { transition: all 0.2s ease; cursor: pointer; background: transparent; }
         .phase-btn:hover { transform: translateY(-2px); }
         .step-card { transition: all 0.2s ease; }
         .step-card:hover { transform: translateX(4px); }
         .rule-item { transition: all 0.15s ease; }
         .rule-item:hover { background: rgba(255,255,255,0.04); }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-        @keyframes scanline { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
         .live-dot { animation: pulse 1.5s infinite; }
+        @media (max-width: 600px) {
+          .metrics-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .tools-kpi-grid { grid-template-columns: 1fr !important; }
+        }
       `}</style>
 
       {/* Header */}
@@ -211,39 +211,21 @@ export default function StealthEngine() {
       </div>
 
       {/* Metric Bar */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(4, 1fr)",
-        borderBottom: "1px solid #1A1F26",
-      }}>
+      <div className="metrics-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", borderBottom: "1px solid #1A1F26" }}>
         {metrics.map((m, i) => (
-          <div key={i} style={{
-            padding: "20px 28px",
-            borderRight: i < 3 ? "1px solid #1A1F26" : "none",
-          }}>
+          <div key={i} style={{ padding: "20px 28px", borderRight: i < metrics.length - 1 ? "1px solid #1A1F26" : "none" }}>
             <div style={{ fontSize: 10, color: "#444", letterSpacing: "0.15em", marginBottom: 6 }}>{m.label}</div>
-            <div style={{
-              fontSize: 26,
-              fontFamily: "'Syne', sans-serif",
-              fontWeight: 800,
-              color: phases[i]?.color || "#E8E8E0",
-              letterSpacing: "-0.02em",
-            }}>{m.value}</div>
+            <div style={{ fontSize: 26, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: metricColors[i] || "#E8E8E0", letterSpacing: "-0.02em" }}>{m.value}</div>
             <div style={{ fontSize: 11, color: "#555", marginTop: 4 }}>{m.sub}</div>
           </div>
         ))}
       </div>
 
       {/* Phase Tabs */}
-      <div style={{
-        display: "flex",
-        gap: 0,
-        borderBottom: "1px solid #1A1F26",
-        overflowX: "auto",
-      }}>
+      <div style={{ display: "flex", gap: 0, borderBottom: "1px solid #1A1F26", overflowX: "auto" }}>
         {phases.map((p, i) => (
           <button
-            key={i}
+            key={p.id}
             className="phase-btn"
             onClick={() => setActivePhase(i)}
             style={{
@@ -254,6 +236,8 @@ export default function StealthEngine() {
               fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 700,
               letterSpacing: "0.15em",
+              borderTop: "none",
+              borderLeft: "none",
               borderRight: "1px solid #1A1F26",
               borderBottom: activePhase === i ? `2px solid ${p.color}` : "2px solid transparent",
               whiteSpace: "nowrap",
@@ -266,67 +250,22 @@ export default function StealthEngine() {
 
       {/* Phase Content */}
       <div style={{ padding: "40px 32px", maxWidth: 1100, margin: "0 auto" }}>
-
-        {/* Phase Header */}
-        <div style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          marginBottom: 40,
-          flexWrap: "wrap",
-          gap: 16,
-        }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 40, flexWrap: "wrap", gap: 16 }}>
           <div>
-            <div style={{
-              fontSize: 11,
-              color: phase.color,
-              letterSpacing: "0.2em",
-              marginBottom: 8,
-              fontWeight: 600,
-            }}>{phase.label} // {phase.timeline}</div>
-            <h2 style={{
-              fontSize: 32,
-              fontFamily: "'Syne', sans-serif",
-              fontWeight: 800,
-              letterSpacing: "-0.03em",
-              lineHeight: 1.1,
-              marginBottom: 10,
-            }}>{phase.title}</h2>
+            <div style={{ fontSize: 11, color: phase.color, letterSpacing: "0.2em", marginBottom: 8, fontWeight: 600 }}>{phase.label} // {phase.timeline}</div>
+            <h2 style={{ fontSize: 32, fontFamily: "'Syne', sans-serif", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 10 }}>{phase.title}</h2>
             <div style={{ fontSize: 13, color: "#888", fontStyle: "italic" }}>"{phase.tagline}"</div>
           </div>
-          <div style={{
-            background: `${phase.color}15`,
-            border: `1px solid ${phase.color}40`,
-            borderRadius: 4,
-            padding: "12px 24px",
-            textAlign: "center",
-          }}>
+          <div style={{ background: `${phase.color}15`, border: `1px solid ${phase.color}40`, borderRadius: 4, padding: "12px 24px", textAlign: "center" }}>
             <div style={{ fontSize: 10, color: phase.color, letterSpacing: "0.15em", marginBottom: 4 }}>TARGET</div>
-            <div style={{
-              fontSize: 28,
-              fontFamily: "'Syne', sans-serif",
-              fontWeight: 800,
-              color: phase.color,
-            }}>{phase.target}</div>
+            <div style={{ fontSize: 28, fontFamily: "'Syne', sans-serif", fontWeight: 800, color: phase.color }}>{phase.target}</div>
           </div>
         </div>
 
-        {/* Description */}
-        <div style={{
-          background: "#0D1117",
-          border: "1px solid #1A1F26",
-          borderLeft: `3px solid ${phase.color}`,
-          borderRadius: 4,
-          padding: "20px 24px",
-          marginBottom: 36,
-          fontSize: 13,
-          color: "#AAA",
-          lineHeight: 1.7,
-        }}>
+        <div style={{ background: "#0D1117", border: "1px solid #1A1F26", borderLeft: `3px solid ${phase.color}`, borderRadius: 4, padding: "20px 24px", marginBottom: 36, fontSize: 13, color: "#AAA", lineHeight: 1.7 }}>
           {phase.description}
         </div>
 
-        {/* Steps */}
         <div style={{ marginBottom: 40 }}>
           <div style={{ fontSize: 10, color: "#444", letterSpacing: "0.2em", marginBottom: 16 }}>EXECUTION STEPS</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -335,7 +274,7 @@ export default function StealthEngine() {
               const done = checkedSteps[key];
               return (
                 <div
-                  key={idx}
+                  key={key}
                   className="step-card"
                   onClick={() => toggleStep(phase.id, idx)}
                   style={{
@@ -349,33 +288,10 @@ export default function StealthEngine() {
                     alignItems: "flex-start",
                   }}
                 >
-                  <div style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 2,
-                    border: `2px solid ${done ? phase.color : "#333"}`,
-                    background: done ? phase.color : "transparent",
-                    flexShrink: 0,
-                    marginTop: 2,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 12,
-                    color: "#080B0F",
-                    fontWeight: 700,
-                  }}>{done ? "✓" : ""}</div>
+                  <div style={{ width: 20, height: 20, borderRadius: 2, border: `2px solid ${done ? phase.color : "#333"}`, background: done ? phase.color : "transparent", flexShrink: 0, marginTop: 2, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, color: "#080B0F", fontWeight: 700 }}>{done ? "✓" : ""}</div>
                   <div style={{ flex: 1 }}>
-                    <div style={{
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: done ? phase.color : "#E8E8E0",
-                      marginBottom: 6,
-                      textDecoration: done ? "line-through" : "none",
-                      opacity: done ? 0.7 : 1,
-                    }}>
-                      <span style={{ color: phase.color, marginRight: 8, opacity: 0.6 }}>
-                        {String(idx + 1).padStart(2, "0")}.
-                      </span>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: done ? phase.color : "#E8E8E0", marginBottom: 6, textDecoration: done ? "line-through" : "none", opacity: done ? 0.7 : 1 }}>
+                      <span style={{ color: phase.color, marginRight: 8, opacity: 0.6 }}>{String(idx + 1).padStart(2, "0")}.</span>
                       {step.title}
                     </div>
                     <div style={{ fontSize: 12, color: "#666", lineHeight: 1.7 }}>{step.detail}</div>
@@ -386,35 +302,16 @@ export default function StealthEngine() {
           </div>
         </div>
 
-        {/* Tools + KPI */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 16 }}>
-          <div style={{
-            background: "#0D1117",
-            border: "1px solid #1A1F26",
-            borderRadius: 4,
-            padding: "20px 22px",
-          }}>
+        <div className="tools-kpi-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 16 }}>
+          <div style={{ background: "#0D1117", border: "1px solid #1A1F26", borderRadius: 4, padding: "20px 22px" }}>
             <div style={{ fontSize: 10, color: "#444", letterSpacing: "0.2em", marginBottom: 14 }}>TOOLS NEEDED</div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               {phase.tools.map((t, i) => (
-                <span key={i} style={{
-                  fontSize: 11,
-                  background: "#141A22",
-                  border: "1px solid #222",
-                  borderRadius: 3,
-                  padding: "4px 10px",
-                  color: "#AAA",
-                  letterSpacing: "0.05em",
-                }}>{t}</span>
+                <span key={i} style={{ fontSize: 11, background: "#141A22", border: "1px solid #222", borderRadius: 3, padding: "4px 10px", color: "#AAA", letterSpacing: "0.05em" }}>{t}</span>
               ))}
             </div>
           </div>
-          <div style={{
-            background: `${phase.color}08`,
-            border: `1px solid ${phase.color}30`,
-            borderRadius: 4,
-            padding: "20px 22px",
-          }}>
+          <div style={{ background: `${phase.color}08`, border: `1px solid ${phase.color}30`, borderRadius: 4, padding: "20px 22px" }}>
             <div style={{ fontSize: 10, color: phase.color, letterSpacing: "0.2em", marginBottom: 14 }}>KPI TARGET</div>
             <div style={{ fontSize: 13, color: "#CCC", lineHeight: 1.8 }}>{phase.kpi}</div>
           </div>
@@ -422,27 +319,12 @@ export default function StealthEngine() {
       </div>
 
       {/* Iron Rules */}
-      <div style={{
-        borderTop: "1px solid #1A1F26",
-        padding: "40px 32px",
-        maxWidth: 1100,
-        margin: "0 auto",
-      }}>
-        <div style={{ fontSize: 10, color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>
-          IRON RULES — NON-NEGOTIABLE
-        </div>
+      <div style={{ borderTop: "1px solid #1A1F26", padding: "40px 32px", maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ fontSize: 10, color: "#444", letterSpacing: "0.2em", marginBottom: 20 }}>IRON RULES — NON-NEGOTIABLE</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
           {rules.map((r, i) => (
-            <div key={i} className="rule-item" style={{
-              display: "flex",
-              gap: 14,
-              alignItems: "flex-start",
-              padding: "12px 16px",
-              borderRadius: 4,
-            }}>
-              <span style={{ color: "#00FF94", fontSize: 11, fontWeight: 700, marginTop: 1, flexShrink: 0 }}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
+            <div key={i} className="rule-item" style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "12px 16px", borderRadius: 4 }}>
+              <span style={{ color: "#00FF94", fontSize: 11, fontWeight: 700, marginTop: 1, flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</span>
               <span style={{ fontSize: 13, color: "#888", lineHeight: 1.6 }}>{r}</span>
             </div>
           ))}
@@ -450,16 +332,7 @@ export default function StealthEngine() {
       </div>
 
       {/* Footer */}
-      <div style={{
-        borderTop: "1px solid #1A1F26",
-        padding: "20px 32px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        fontSize: 10,
-        color: "#333",
-        letterSpacing: "0.1em",
-      }}>
+      <div style={{ borderTop: "1px solid #1A1F26", padding: "20px 32px", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 10, color: "#333", letterSpacing: "0.1em" }}>
         <span>STEALTH ENGINE v1.0 // NO AUDIENCE. NO CAPITAL. NO EXCUSES.</span>
         <span>START: DAY 1 → END: DAY 45 → TARGET: $9,300/MO</span>
       </div>
